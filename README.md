@@ -1,1 +1,4 @@
 # Pattern-Recognition-for-Returns-Prediction
+
+As time passes debates over efficiency of technical analysis of markets in price prediction are still ongoing and nowhere to end. People are still polarized when the discussion is brought up with proponents believing in predictive power of technical analysis and proponents of efficient-market hypothesis (EMH) saying that technical analysis has nothing to do with real-world financial market analysis. This thesis applies latest neuro network architectures and data extraction methods to pattern recognition analysis and proposes methodology for encoding of trading patterns of CNN model into three field matrices GASF GADF MTF in order to achieve more accurate classification. Empirical part consists of comparing baseline LSTM model’s prediction sequence with and without pattern and evaluating backtesting pattern prediction model on S&P 500 1-minute high frequency data.
+
