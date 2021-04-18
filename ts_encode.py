@@ -21,32 +21,16 @@ def open(img_path):
 
 def OHLC_to_channels(figure):
   directory = "/content/DATASET_GAF/"
-  figures = ["H&S"]
   fields = ["MTF", "GASF","GADF"]
   merged = []
-  if figure == "BBOT1" or figure == "BTOP1":
-    files_temp = os.listdir("/content/Synth_Samples/"+str(step)+"/"+figure[:4]+"/GADF/Open")
-    files_temp = remove_values_from_list(files_temp, "1.png")
-    files_temp = remove_values_from_list(files_temp, ".DS_Store")
-  else:
-    files_temp = os.listdir("/content/DATASET_GAF/"+figure+"/"+str(step)+"/GASF/Open")
-    files_temp = remove_values_from_list(files_temp, "1.png")
-    files_temp = remove_values_from_list(files_temp, ".DS_Store")
-  files_temp = [i for i in files_temp if i not in img_to_del]
+  files_temp = os.listdir("/content/DATASET_GAF/"+figure+"/"+str(step)+"/GASF/Open")
   for x in fields:
     temp = []
-
     for idx,i in enumerate(files_temp):
-      if figure == "BBOT1" or figure == "BTOP1":
-        ope = open("/content/Synth_Samples/"+str(step)+"/"+ figure[:4]+"/"+x +"/Open/" + i)
-        high = open("/content/Synth_Samples/"+str(step)+"/"+ figure[:4]+"/"+x +"/High/"+ i)
-        close = open("/content/Synth_Samples/"+str(step)+"/"+ figure[:4]+"/"+x +"/Close/"+ i)
-        low = open("/content/Synth_Samples/"+str(step)+"/"+ figure[:4]+"/"+x +"/Low/"+ i)
-      else:
-        ope = open(directory + figure +"/"+str(step)+"/"+ x +"/Open/" + i)
-        high = open(directory + figure + "/"+str(step)+"/"+ x +"/High/"+ i)
-        close = open(directory + figure +"/"+str(step)+"/"+ x +"/Close/"+ i)
-        low = open(directory + figure +"/"+str(step)+"/"+ x +"/Low/"+ i)
+      ope = open(directory + figure +"/"+str(step)+"/"+ x +"/Open/" + i)
+      high = open(directory + figure + "/"+str(step)+"/"+ x +"/High/"+ i)
+      close = open(directory + figure +"/"+str(step)+"/"+ x +"/Close/"+ i)
+      low = open(directory + figure +"/"+str(step)+"/"+ x +"/Low/"+ i)
       temp.append(np.array([ope,high,close,low]).reshape(1, step, step, 4))
     temp = np.vstack(temp)
     merged.append(temp)
@@ -56,39 +40,16 @@ def OHLC_to_channels(figure):
 def OHLC_in_one(figure):
   directory = "/content/DATASET_GAF/"
   fields = ["MTF", "GASF","GADF"]
-  if figure == "BBOT1" or figure == "BTOP1":
-    files_temp = os.listdir("/content/Synth_Samples/"+str(step)+"/"+figure[:4]+"/GADF/Open")
-    files_temp = remove_values_from_list(files_temp, "1.png")
-    files_temp = remove_values_from_list(files_temp, ".DS_Store")
-  elif figure == "not-BBOT" or figure == "not-BTOP":
-    files_temp = os.listdir("/content/other_n/GADF/Open")
-    files_temp = remove_values_from_list(files_temp, "1.png")
-    files_temp = remove_values_from_list(files_temp, ".DS_Store")
-  else:
-    files_temp = os.listdir("/content/DATASET_GAF/"+figure+"/"+str(step)+"/GASF/Open")
-    files_temp = remove_values_from_list(files_temp, "1.png")
-    files_temp = remove_values_from_list(files_temp, ".DS_Store")
+  files_temp = os.listdir("/content/DATASET_GAF/"+figure+"/"+str(step)+"/GASF/Open")
   merged = []
-  files_temp = [i for i in files_temp if i not in img_to_del]
   for x in fields:
     temp = []
     for idx,i in enumerate(files_temp):
-      if figure == "BBOT1" or figure == "BTOP1":
-        ope = open("/content/Synth_Samples/"+str(step)+"/"+ figure[:4]+"/"+x +"/Open/" + i)
-        high = open("/content/Synth_Samples/"+str(step)+"/"+ figure[:4]+"/"+x +"/High/"+ i)
-        close = open("/content/Synth_Samples/"+str(step)+"/"+ figure[:4]+"/"+x +"/Close/"+ i)
-        low = open("/content/Synth_Samples/"+str(step)+"/"+ figure[:4]+"/"+x +"/Low/"+ i)
-      elif figure == "not-BBOT" or figure == "not-BTOP":
-        ope = open("/content/other_n/"+ x +"/Open/" + i)
-        high = open("/content/other_n/"+x +"/High/"+ i)
-        close = open("/content/other_n/"+x +"/Close/"+ i)
-        low = open("/content/other_n/"+ x +"/Low/"+ i)
-      else:
-        ope = open(directory + figure +"/"+str(step)+"/"+ x +"/Open/" + i)
-        high = open(directory + figure + "/"+str(step)+"/"+ x +"/High/"+ i)
-        close = open(directory + figure +"/"+str(step)+"/"+ x +"/Close/"+ i)
-        low = open(directory + figure +"/"+str(step)+"/"+ x +"/Low/"+ i)
-      array = np.hstack((ope, high))
+      open = open("/content/other_n/"+ x +"/Open/" + i)
+      high = open("/content/other_n/"+ x +"/High/"+ i)
+      close = open("/content/other_n/"+ x +"/Close/"+ i)
+      low = open("/content/other_n/"+ x +"/Low/"+ i)
+      array = np.hstack((open, high))
       array_1 = np.hstack((close, low))
       array = np.vstack((array, array_1))
       temp.append(array.reshape(step*2, step*2, 1))
