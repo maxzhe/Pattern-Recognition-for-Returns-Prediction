@@ -45,11 +45,11 @@ def OHLC_in_one(figure):
   for x in fields:
     temp = []
     for idx,i in enumerate(files_temp):
-      open = open("/content/other_n/"+ x +"/Open/" + i)
-      high = open("/content/other_n/"+ x +"/High/"+ i)
-      close = open("/content/other_n/"+ x +"/Close/"+ i)
-      low = open("/content/other_n/"+ x +"/Low/"+ i)
-      array = np.hstack((open, high))
+      ope = open(directory + figure +"/"+str(step)+"/"+ x +"/Open/" + i)
+      high = open(directory + figure + "/"+str(step)+"/"+ x +"/High/"+ i)
+      close = open(directory + figure +"/"+str(step)+"/"+ x +"/Close/"+ i)
+      low = open(directory + figure +"/"+str(step)+"/"+ x +"/Low/"+ i)
+      array = np.hstack((ope, high))
       array_1 = np.hstack((close, low))
       array = np.vstack((array, array_1))
       temp.append(array.reshape(step*2, step*2, 1))
