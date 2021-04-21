@@ -29,7 +29,7 @@ def calculate_ema(series_y, size=30):
 
 if __name__ == "__main__":
   ###### Stock csv
-  sp500 = pd.read_csv("/content/sp500.csv") #load here any stock
+  sp500 = pd.read_csv("/sp500.csv") #load here any stock
   
   ### Auxillary
   sp500["D"]=np.where(sp500["Close"] > sp500["Close"].shift(1), 1, -1)
