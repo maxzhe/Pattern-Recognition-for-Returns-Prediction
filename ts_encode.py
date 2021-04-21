@@ -20,10 +20,10 @@ def open(img_path):
 
 
 def OHLC_to_channels(figure):
-  directory = "/content/DATASET_GAF/"
+  directory = "/Merged_data/"
   fields = ["MTF", "GASF","GADF"]
   merged = []
-  files_temp = os.listdir("/content/DATASET_GAF/"+figure+"/"+str(step)+"/GASF/Open")
+  files_temp = os.listdir(directory+figure+"/"+str(step)+"/GASF/Open")
   for x in fields:
     temp = []
     for idx,i in enumerate(files_temp):
@@ -38,9 +38,9 @@ def OHLC_to_channels(figure):
 
 
 def OHLC_in_one(figure):
-  directory = "/content/DATASET_GAF/"
+  directory = "/Merged_data/"
   fields = ["MTF", "GASF","GADF"]
-  files_temp = os.listdir("/content/DATASET_GAF/"+figure+"/"+str(step)+"/GASF/Open")
+  files_temp = os.listdir(directory+figure+"/"+str(step)+"/GASF/Open")
   merged = []
   for x in fields:
     temp = []
@@ -59,17 +59,16 @@ def OHLC_in_one(figure):
 
 
 def GAF_data_2(df, step):
-  col = ['Open', 'High', 'Close','Low']
-
-  gasf = GramianAngularField(image_size=step, method='summation')
-  gadf = GramianAngularField(image_size=step, method='difference')
+  col = ["Open", "High", "Close","Low"]
+  gasf = GramianAngularField(image_size=step, method="summation")
+  gadf = GramianAngularField(image_size=step, method="difference")
   mtf = MarkovTransitionField(image_size=step)
   X_mtf = []
   X_gasf = []
   X_gadf = []
   for i in range((step-1),len(df[col[0]])):
-    high = max(df['High'][i-(step-1):i+1])
-    low = min(df['Low'][i-(step-1):i+1])
+    high = max(df["High"][i-(step-1):i+1])
+    low = min(df["Low"][i-(step-1):i+1])
     ts_1 = [(x-low)/(high - low) for x in list(df[col[0]][i-(step-1):i+1])]
     ts_2 = [(x-low)/(high - low) for x in list(df[col[1]][i-(step-1):i+1])]
     ts_3 = [(x-low)/(high - low) for x in list(df[col[2]][i-(step-1):i+1])]
@@ -85,8 +84,8 @@ def GAF_data_2(df, step):
   X_mtf = np.stack(X_mtf)
 
   for i in range((step-1),len(df[col[0]])):
-    high = max(df['High'][i-(step-1):i+1])
-    low = min(df['Low'][i-(step-1):i+1])
+    high = max(df["High"][i-(step-1):i+1])
+    low = min(df["Low"][i-(step-1):i+1])
     ts_1 = [(x-low)/(high - low) for x in list(df[col[0]][i-(step-1):i+1])]
     ts_2 = [(x-low)/(high - low) for x in list(df[col[1]][i-(step-1):i+1])]
     ts_3 = [(x-low)/(high - low) for x in list(df[col[2]][i-(step-1):i+1])]
@@ -98,8 +97,8 @@ def GAF_data_2(df, step):
   X_gadf = np.stack(X_gadf)
 
   for i in range((step-1),len(df[col[0]])):
-    high = max(df['High'][i-(step-1):i+1])
-    low = min(df['Low'][i-(step-1):i+1])
+    high = max(df["High"][i-(step-1):i+1])
+    low = min(df["Low"][i-(step-1):i+1])
     ts_1 = [(x-low)/(high - low) for x in list(df[col[0]][i-(step-1):i+1])]
     ts_2 = [(x-low)/(high - low) for x in list(df[col[1]][i-(step-1):i+1])]
     ts_3 = [(x-low)/(high - low) for x in list(df[col[2]][i-(step-1):i+1])]
@@ -113,22 +112,22 @@ def GAF_data_2(df, step):
 
 
 def save_to_GAF_img(df, file, step):
-  OHLC = ['Open', 'High', 'Low', 'Close']
-  high = max(df['High'])
-  low = min(df['Low'])
+  OHLC = ["Open", "High", "Low", "Close"]
+  high = max(df["High"])
+  low = min(df["Low"])
 
   for col in OHLC:
-      Path('/content/other_n/GASF/' + col + '/').mkdir(parents=True, exist_ok=True)
-      Path('/content/other_n/GADF/' + col + '/').mkdir(parents=True, exist_ok=True)
-      Path('/content/other_n/MTF/' + col + '/').mkdir(parents=True, exist_ok=True)
-      gasf = GramianAngularField(image_size=step, method='summation')
-      gadf = GramianAngularField(image_size=step, method='difference')
+      Path("/content/GASF/" + col + "/").mkdir(parents=True, exist_ok=True)
+      Path("/content/GADF/" + col + "/").mkdir(parents=True, exist_ok=True)
+      Path("/content/MTF/" + col + "/").mkdir(parents=True, exist_ok=True)
+      gasf = GramianAngularField(image_size=step, method="summation")
+      gadf = GramianAngularField(image_size=step, method="difference")
       mtf = MarkovTransitionField(image_size=step)
       ts_norm = [(i-low)/(high - low) for i in list(df[col])]
       X_mtf = mtf.fit_transform([ts_norm])
       X_gasf = gasf.fit_transform([ts_norm])
       X_gadf = gadf.fit_transform([ts_norm])
       
-      plt.imsave('/content/other_n/GASF/' +  col + '/' + file, X_gasf[0], cmap='gray')
-      plt.imsave('/content/other_n/GADF/' +  col + '/' + file, X_gadf[0], cmap='gray')
-      plt.imsave('/content/other_n/MTF/' +  col + '/' + file, X_mtf[0], cmap='gray')
+      plt.imsave("/content/other_n/GASF/" +  col + "/" + file, X_gasf[0], cmap="gray")
+      plt.imsave("/content/other_n/GADF/" +  col + "/" + file, X_gadf[0], cmap="gray")
+      plt.imsave("/content/other_n/MTF/" +  col + "/" + file, X_mtf[0], cmap="gray")

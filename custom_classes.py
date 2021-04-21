@@ -18,9 +18,9 @@ class AddCoords(base_layer.Layer):
 
         config = super(AddCoords, self).get_config().copy()
         config.update({
-            'x_dim': self.x_dim,
-            'y_dim': self.y_dim,
-            'with_r': self.with_r,
+            "x_dim": self.x_dim,
+            "y_dim": self.y_dim,
+            "with_r": self.with_r,
         })
         return config
      
@@ -47,8 +47,8 @@ class AddCoords(base_layer.Layer):
  
         yy_channel = tf.matmul(yy_range, yy_ones)
         yy_channel = tf.expand_dims(yy_channel, -1)
-        xx_channel = tf.cast(xx_channel, 'float32') / (self.x_dim - 1)
-        yy_channel = tf.cast(yy_channel, 'float32') / (self.y_dim - 1)
+        xx_channel = tf.cast(xx_channel, "float32") / (self.x_dim - 1)
+        yy_channel = tf.cast(yy_channel, "float32") / (self.y_dim - 1)
         xx_channel = xx_channel*2 - 1
         yy_channel = yy_channel*2 - 1
  
@@ -66,16 +66,16 @@ class CoordConv(base_layer.Layer):
     def __init__(self, x_dim=15, y_dim=15, with_r=False, *args, **kwargs):
         super(CoordConv, self).__init__()
         for i, v in kwargs.items():
-            if i == 'addcoords':
+            if i == "addcoords":
                 self.addcoords = v
-            if i == 'conv':
+            if i == "conv":
                 self.conv = v
 
     def get_config(self):
         config = super(CoordConv, self).get_config().copy()
         config.update({
-            'addcoords': self.addcoords,
-            'conv': self.conv,
+            "addcoords": self.addcoords,
+            "conv": self.conv,
 
         })
         return config

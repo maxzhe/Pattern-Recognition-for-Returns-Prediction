@@ -33,11 +33,11 @@ def create_shallow_LSTM(features=49,
   model.add(LSTM(units=LSTM_units_1,recurrent_dropout=recurrent_dropout, stateful=True))
   
             
-  model.add(Dense(1, activation='sigmoid'))
+  model.add(Dense(1, activation="sigmoid"))
   model.compile(
-        loss='binary_crossentropy', 
+        loss="binary_crossentropy",
         optimizer=Adam(), 
-        metrics=['accuracy']
+        metrics=["accuracy"]
     )
   return model
 
@@ -56,7 +56,7 @@ def LSTM_evaluation(X_train_1, X_train_1_lstm):
       model.fit(X_train_tscv, y_train_1[train_index[0]:train_index[-1]], epochs=20, batch_size=1, verbose=2)
       X_test_batch = X_train_1[test_index[0]:test_index[-1]]
       score = model.evaluate(scaler.transform(X_test_batch).reshape(X_test_batch.shape[0],1,X_test_batch.shape[1]).astype(np.float32) , y_train_1[test_index[0]:test_index[-1]], batch_size=1, verbose=1)
-      print('MODEL 1 accuracy:' , score)
+      print("MODEL 1 accuracy:" , score)
 
 
 def hyperparameter_search(epochs=300):
@@ -72,8 +72,8 @@ def hyperparameter_search(epochs=300):
 
   tscv=TimeSeriesSplit(n_splits=20).split(X_train_1_lstm)
 
-  p = Pipeline([('scaler', CustomScaler()),
-                ('model', model)])
+  p = Pipeline([("scaler", CustomScaler()),
+                ("model", model)])
                 
   # GridSearch in action
   grid = GridSearchCV(p, 
@@ -83,13 +83,13 @@ def hyperparameter_search(epochs=300):
 
   grid_result = grid.fit(X_train_1_lstm, y_train_1)
 
-  print('Best hyperparameters:')
+  print("Best hyperparameters:")
 
-  print('dropout_rate:', grid_result.best_estimator_.get_params()['dropout_rate'])
+  print("dropout_rate:", grid_result.best_estimator_.get_params()["dropout_rate"])
 
-  print('accuracy of the best model: ', grid_result.best_score_)
-  print('LSTM units:', grid_result.best_estimator_.get_params()['LSTM_units'])
-  print('LSTM_1 units:', grid_result.best_estimator_.get_params()['LSTM_units_1'])
+  print("accuracy of the best model: ", grid_result.best_score_)
+  print("LSTM units:", grid_result.best_estimator_.get_params()["LSTM_units"])
+  print("LSTM_1 units:", grid_result.best_estimator_.get_params()["LSTM_units_1"])
   return grid_result
 
 
